@@ -1,0 +1,2 @@
+# myminitest
+MyMiniFactory Test
