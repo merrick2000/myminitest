@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    {% if cartItems is defined and cartItems is not empty%}
+            <main>
+                    <div class="container-fluid px-4">
+                        <p class="mt-4">
+                            <a href="{{ path('app_home') }}">Continue shopping</a>
+                        </p>
+                        <h1 class="mt-4">Cart Items</h1>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Cart Total: {% if total is defined and total is not empty %} {{ total }} {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Variant Name</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                        {% for item in cartItems %}
+                                        <tr>
+                                            <td>
+                                                 {{ item.product.name }}
+                                            </td>
+                                            <td>
+                                                {% if item.hasVariant == false %}
+                                                    No variant
+                                                {% else %}
+                                                     {{ item.variant.size }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if item.hasVariant == false %}
+                                                    {{ item.product.price }}
+                                                {% else %}
+                                                     {{ item.variant.price }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ item.quantity }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('app_remove_cart', {'id': item.product.id}) }}" class="btn btn-danger">Remove<a/>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                   
+                                    </tbody>
+                                </table>
+                                <a href="{{ path('app_make_order') }}" class="btn btn-success">Order Now</a>
+                            </div>
+                                    
+                                
+                        </div>
+                    </div>
+                </main>
+    
+    {% else %}
+    <h3 class="text-center m-5">Cart Empty<h3>
+    {% endif %}
+{% endblock %}
+{% block footerJs %}
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/admin/js/datatables-simple-demo.js') }}"></script>
+    
+{% endblock %}

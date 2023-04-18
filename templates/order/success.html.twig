@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+    <div class="container m-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card border-success">
+        <div class="card-header bg-success text-white text-center">
+          Order Completed Successfully
+        </div>
+        <div class="card-body">
+          <p>Thank you for your purchase! Your order has been completed successfully.</p>
+          <p>Please check your email for the order confirmation and shipping details.</p>
+          <p>You can <a href="{{ path('app_home') }}">go to Our Shop</a> and Enjoy Shopping</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

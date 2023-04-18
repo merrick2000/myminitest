@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+    
+  <div class="row justify-content-center m-5">
+    <div class="col-md-6">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Order Failed: No Enough Credits</h5>
+          <p class="card-text">Unfortunately, your order could not be completed at this time.</p>
+          <a href="{{ path('app_home') }}" class="btn btn-primary">Go back to homepage or request ask for more Credits to the Admin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

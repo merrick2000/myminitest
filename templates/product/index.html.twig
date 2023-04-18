@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+    <main>
+                    <div class="container-fluid px-4">
+                        <div>
+                            <h1 class="mt-4">Products</h1>
+                            <a style="height: 50%" class="m-3 btn btn-primary" href="{{ path('app_dashboard_add_product') }}">Add Product<a/>
+                            
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Products listing
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if products %}
+                                        {% for product in products %}
+                                        <tr>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>{{ product.createdAt|date }}</td>
+                                            <td><a href="{{ path('app_dashboard_product_show', {'id': product.id}) }}">Show<a/></td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+{% endblock %}
+{% block footerJs %}
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/admin/js/datatables-simple-demo.js') }}"></script>
+    
+{% endblock %}
+

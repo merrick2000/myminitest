@@ -1,0 +1,80 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block body %}
+    <h1>Edit Product</h1>
+
+    {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.name, 'Name') }}
+            {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.description, 'Description') }}
+            {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.price, 'Price') }}
+            {{ form_widget(form.price, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <hr>
+
+        {% for productVariantForm in form.productVariants %}
+            <div class="product-variants-entry mb-3 p-3 border border-secondary rounded">
+                <div class="form-group">
+                    {{ form_label(productVariantForm.sizeVariant, 'Size') }}
+                    {{ form_widget(productVariantForm.sizeVariant, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(productVariantForm.price, 'Price') }}
+                    {{ form_widget(productVariantForm.price, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                {# <button type="button" class="btn btn-danger" data-entry-remove>Remove</button> #}
+            </div>
+        {% endfor %}
+
+        <button type="button" class="btn btn-secondary" id="add-product-variant">Add Product Variant</button>
+
+        <div id="product-variants-wrapper"
+             data-prototype="{{ form_widget(form.productVariants.vars.prototype)|e('html_attr') }}"
+             data-index="{{ form.productVariants|length }}">
+            <div id="product-variants-entries"></div>
+        </div>
+
+        <hr>
+
+        <input type="submit" value="Save" class="btn btn-primary">
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footerJs %}
+    {{ parent() }}
+    <script>
+        // Add new product variant form
+        let addProductVariantButton = document.querySelector('#add-product-variant');
+        let productVariantsWrapper = document.querySelector('#product-variants-wrapper');
+        addProductVariantButton.addEventListener('click', function () {
+            let prototype = productVariantsWrapper.dataset.prototype;
+            let index = productVariantsWrapper.dataset.index;
+            let newForm = prototype.replace(/__name__/g, index);
+            productVariantsWrapper.dataset.index = parseInt(index) + 1;
+
+            let newFormWrapper = document.createElement('div');
+            newFormWrapper.innerHTML = newForm;
+            let newFormElement = newFormWrapper.firstChild;
+
+            // Add Bootstrap classes to new form element
+            newFormElement.classList.add('product-variants-entry', 'mb-3', 'p-3', 'border', 'border-secondary', 'rounded');
+
+            let productVariantsEntries = productVariantsWrapper.querySelector('#product-variants-entries');
+            productVariantsEntries.appendChild(newFormElement);
+
+            let removeButtons = newFormElement.querySelectorAll('[data-entry-remove]');
+            removeButtons.forEach(function (removeButton) {
+                removeButton.addEventListener('click', function () {
+                    removeButton.closest('.product-variants-entry').remove();
+                });
+            });
+        });
+    </script>
+{% endblock %}

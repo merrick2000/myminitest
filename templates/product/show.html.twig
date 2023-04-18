@@ -1,0 +1,38 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>{{ product.name }}</h1>
+        <p>Description: {{ product.description }}</p>
+        <p>Price: {{ product.price }}</p>
+        <p>Created at: {{ product.createdAt|date('Y-m-d H:i:s') }}</p>
+      </div>
+      {% if product.productVariants|length > 0 %}
+        <div class="col-md-6">
+          <h2>Product Variants:</h2>
+          <ul>
+            {% for productVariant in product.productVariants %}
+              <li>{{ productVariant.sizeVariant.size }} - {{ productVariant.price }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <a class="btn btn-primary" href="{{ path('app_dashboard_product_edit', {id: product.id}) }}">Edit</a>
+      </div>
+      <div class="col-md-6 text-md-right">
+        <form name="form" method="post" action="{{ path('app_dashboard_product_delete', {id: product.id}) }}">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="form[_token]" value="{{ csrf_token('delete_product_' ~ product.id) }}" />
+            <input class="btn btn-danger" type="submit" value="Delete">
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
